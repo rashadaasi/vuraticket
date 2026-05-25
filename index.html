@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vura Ticket — Book with $VT · Airlines · Trains · Cinema & More</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#f5c842;--gold-light:#ffe180;--gold-dark:#b8860b;
+  --green:#4ade80;--green-mid:#22c55e;--green-dark:#166534;--green-deep:#052e16;--green-light:#86efac;
+  --purple:#a855f7;--blue:#60a5fa;--red:#f87171;--orange:#fb923c;--cyan:#22d3ee;--pink:#f472b6;
+  --bg:#020702;--bg2:#040e04;--bg3:#071007;
+  --surface:rgba(74,222,128,0.03);--surface2:rgba(74,222,128,0.07);
+  --border:rgba(74,222,128,0.12);--border2:rgba(74,222,128,0.22);
+  --text:#dcfce7;--text2:#86efac;--muted:#4a6b55;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden;}
+
+/* ── BG ── */
+.site-bg{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(74,222,128,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,0.025) 1px,transparent 1px);background-size:55px 55px;}
+.bg-g1{position:absolute;top:-10%;left:-5%;width:55%;height:55%;background:radial-gradient(circle,rgba(245,200,66,0.05),transparent 65%);}
+.bg-g2{position:absolute;bottom:-10%;right:-5%;width:50%;height:55%;background:radial-gradient(circle,rgba(74,222,128,0.05),transparent 65%);}
+.bg-g3{position:absolute;top:40%;left:35%;width:45%;height:45%;background:radial-gradient(circle,rgba(168,85,247,0.03),transparent 65%);}
+.bg-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.015) 3px,rgba(0,0,0,0.015) 4px);}
+
+/* ── TICKER ── */
+.ticker-wrap{position:fixed;top:0;left:0;right:0;z-index:120;background:rgba(5,46,22,0.4);border-bottom:1px solid rgba(74,222,128,0.1);padding:8px 0;overflow:hidden;}
+.ticker-track{display:flex;gap:60px;white-space:nowrap;animation:ticker 32s linear infinite;}
+.ti{display:flex;align-items:center;gap:8px;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:11px;}
+.ti-lbl{color:var(--muted);}
+.ti-val{color:var(--text);}
+.ti-up{color:var(--green);}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── NAV ── */
+nav{position:fixed;top:30px;left:0;right:0;z-index:110;height:64px;background:rgba(2,7,2,0.93);backdrop-filter:blur(22px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:16px;}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;flex-shrink:0;}
+.nav-logo-icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--green-deep),var(--green-dark));border:1px solid rgba(74,222,128,0.4);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.nav-logo-text{font-family:'Orbitron',monospace;font-size:15px;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-cats{display:flex;align-items:center;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none;}
+.nav-cats::-webkit-scrollbar{display:none;}
+.nav-cat{padding:7px 13px;border-radius:8px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;white-space:nowrap;border:none;background:none;display:flex;align-items:center;gap:6px;}
+.nav-cat:hover,.nav-cat.active{color:var(--green);background:rgba(74,222,128,0.07);}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0;}
+.nav-bal{display:flex;align-items:center;gap:6px;background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);border-radius:20px;padding:6px 14px;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--gold);white-space:nowrap;}
+.nb-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:blink 1.8s ease-in-out infinite;}
+.nav-admin{padding:8px 16px;border-radius:8px;background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3);color:var(--purple);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.nav-admin:hover{background:rgba(168,85,247,0.22);}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* ── PAGES ── */
+.page{display:none;padding-top:94px;min-height:100vh;}
+.page.active{display:block;}
+.max-w{max-width:1240px;margin:0 auto;padding:0 28px;}
+
+/* ── SHARED ── */
+.section-tag{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:3px;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.section-tag::before{content:'//';color:var(--muted);}
+h2.section-title{font-family:'Orbitron',monospace;font-size:clamp(22px,3vw,36px);font-weight:900;line-height:1.1;margin-bottom:10px;background:linear-gradient(135deg,var(--text),var(--green-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;}
+.pill.green{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:var(--green);}
+.pill.gold{background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.25);color:var(--gold);}
+.pill.blue{background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);color:var(--blue);}
+.pill.purple{background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3);color:var(--purple);}
+.pill.red{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);color:var(--red);}
+.pill.orange{background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.25);color:var(--orange);}
+.pill.cyan{background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.25);color:var(--cyan);}
+.pill.pink{background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.25);color:var(--pink);}
+
+.btn-gold{padding:12px 26px;border-radius:50px;background:linear-gradient(135deg,#8b6914,#d4a017,#f5c842,#ffe180);color:#1a0a00;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(245,200,66,0.3);transition:all 0.25s;}
+.btn-gold:hover{box-shadow:0 6px 28px rgba(245,200,66,0.5);transform:translateY(-2px);}
+.btn-green{padding:12px 26px;border-radius:50px;background:linear-gradient(135deg,#052e16,#14532d,#22c55e);color:#f0fdf4;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(34,197,94,0.28);transition:all 0.25s;}
+.btn-green:hover{box-shadow:0 6px 28px rgba(34,197,94,0.45);transform:translateY(-2px);}
+.btn-outline{padding:12px 26px;border-radius:50px;background:transparent;border:1px solid rgba(74,222,128,0.35);color:var(--green);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.25s;}
+.btn-outline:hover{background:rgba(74,222,128,0.08);}
+
+/* ── TOAST ── */
+.toast{position:fixed;top:105px;left:50%;transform:translateX(-50%) translateY(-12px);background:rgba(2,7,2,0.97);border:1px solid var(--green);border-radius:30px;padding:10px 24px;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--green);opacity:0;transition:all 0.3s;pointer-events:none;z-index:9999;white-space:nowrap;box-shadow:0 0 22px rgba(74,222,128,0.25);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.gold{border-color:var(--gold);color:var(--gold);box-shadow:0 0 22px rgba(245,200,66,0.25);}
+.toast.red{border-color:var(--red);color:var(--red);}
+.toast.blue{border-color:var(--blue);color:var(--blue);}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.28s;}
+.overlay.open{opacity:1;pointer-events:all;}
+.modal{width:100%;max-width:560px;background:#071007;border:1px solid var(--border2);border-radius:22px;overflow:hidden;transform:scale(0.95);transition:transform 0.28s;max-height:90vh;overflow-y:auto;}
+.modal::-webkit-scrollbar{width:4px;}
+.modal::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.overlay.open .modal{transform:scale(1);}
+.modal-hdr{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#071007;z-index:2;}
+.modal-title{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;letter-spacing:2px;color:var(--green);}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all 0.2s;flex-shrink:0;}
+.modal-close:hover{border-color:var(--green);color:var(--green);}
+.modal-body{padding:22px 24px 28px;}
+.mfield{margin-bottom:14px;}
+.mfield label{display:block;font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.mfield input,.mfield select,.mfield textarea{width:100%;background:rgba(74,222,128,0.04);border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-family:'Syne',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.mfield input:focus,.mfield select:focus,.mfield textarea:focus{border-color:var(--green);}
+.mfield select option{background:#071007;}
+.mfield textarea{resize:vertical;min-height:80px;}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.mbtn{width:100%;padding:14px;border:none;border-radius:12px;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.2s;margin-top:6px;}
+.mbtn-gold{background:linear-gradient(135deg,#8b6914,#d4a017,#f5c842);color:#1a0a00;box-shadow:0 4px 16px rgba(245,200,66,0.3);}
+.mbtn-gold:hover{box-shadow:0 6px 24px rgba(245,200,66,0.5);transform:translateY(-1px);}
+.mbtn-green{background:linear-gradient(135deg,#052e16,#14532d,#22c55e);color:#f0fdf4;box-shadow:0 4px 16px rgba(74,222,128,0.25);}
+.mbtn-green:hover{box-shadow:0 6px 24px rgba(74,222,128,0.4);transform:translateY(-1px);}
+.mfee-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;}
+.mfee-row:last-child{border-bottom:none;}
+.mfee-label{color:var(--muted);}
+.mfee-val{font-family:'Orbitron',monospace;font-weight:700;color:var(--gold);}
+.mfee-val.green{color:var(--green);}
+
+/* ── HOME HERO ── */
+.hero{position:relative;z-index:1;padding:50px 28px 60px;overflow:hidden;}
+.hero-inner{max-width:1200px;margin:0 auto;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.25);border-radius:30px;padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:18px;}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2s ease-in-out infinite;}
+.hero-h1{font-family:'Orbitron',monospace;font-size:clamp(32px,5vw,62px);font-weight:900;line-height:1.05;letter-spacing:-1px;margin-bottom:10px;}
+.hero-h1 .g{background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
+.hero-h1 .gr{background:linear-gradient(135deg,var(--green-light),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
+.hero-sub{font-size:15px;color:var(--text2);line-height:1.75;margin:16px 0 32px;max-width:600px;}
+.hero-sub strong{color:var(--green);}
+.hero-cats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px;}
+.hero-cat-btn{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 22px;border-radius:18px;background:rgba(255,255,255,0.03);border:1px solid var(--border);cursor:pointer;transition:all 0.3s;min-width:100px;}
+.hero-cat-btn:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.3);}
+.hero-cat-btn .hcb-icon{font-size:30px;}
+.hero-cat-btn .hcb-label{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--text2);}
+
+/* ── STATS BAND ── */
+.stats-band{position:relative;z-index:1;display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,0.015);margin-bottom:0;}
+.sb-item{padding:20px 14px;text-align:center;border-right:1px solid var(--border);}
+.sb-item:last-child{border-right:none;}
+.sb-val{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:var(--green);display:block;margin-bottom:4px;}
+.sb-lbl{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+
+/* ── CATEGORY SECTION ── */
+.cat-section{padding:60px 0 80px;position:relative;z-index:1;}
+.cat-filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;}
+.cf-btn{padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:all 0.2s;font-family:'Syne',sans-serif;}
+.cf-btn:hover,.cf-btn.active{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.3);color:var(--green);}
+
+/* ── SEARCH BAR ── */
+.search-row{display:flex;gap:12px;margin-bottom:30px;align-items:center;}
+.search-box{flex:1;display:flex;align-items:center;gap:10px;background:rgba(74,222,128,0.04);border:1px solid var(--border2);border-radius:12px;padding:12px 18px;}
+.search-box input{flex:1;background:transparent;border:none;outline:none;font-family:'Syne',sans-serif;font-size:14px;color:var(--text);}
+.search-box input::placeholder{color:var(--muted);}
+.search-icon{color:var(--muted);font-size:16px;}
+.sort-sel{padding:11px 16px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);font-family:'Syne',sans-serif;font-size:13px;color:var(--text);outline:none;cursor:pointer;}
+.sort-sel option{background:var(--bg3);}
+
+/* ── TICKET CARDS GRID ── */
+.tickets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px;}
+
+/* ── TICKET CARD ── */
+.ticket-card{background:var(--bg2);border:1px solid var(--border);border-radius:22px;overflow:hidden;cursor:pointer;transition:all 0.35s;position:relative;}
+.ticket-card:hover{border-color:var(--border2);transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,0.4);}
+.tc-banner{height:130px;position:relative;overflow:hidden;display:flex;align-items:flex-end;}
+.tc-banner-bg{position:absolute;inset:0;}
+.tc-banner-emoji{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:68px;opacity:0.18;}
+.tc-banner-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(4,14,4,1) 0%,transparent 70%);}
+.tc-badge{position:absolute;top:14px;left:14px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;}
+.tc-seats-left{position:absolute;top:14px;right:14px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text2);background:rgba(0,0,0,0.5);padding:4px 10px;border-radius:10px;}
+.tc-body{padding:16px 20px 20px;}
+.tc-title{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px;letter-spacing:0.5px;}
+.tc-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+.tc-meta-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
+.tc-divider{height:1px;background:var(--border);margin:14px 0;position:relative;}
+.tc-divider::before,.tc-divider::after{content:'';position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:var(--bg);border:1px solid var(--border);transform:translateY(-50%);}
+.tc-divider::before{left:-8px;}
+.tc-divider::after{right:-8px;}
+.tc-footer{display:flex;align-items:center;justify-content:space-between;}
+.tc-price{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:var(--gold);}
+.tc-price-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+.tc-book-btn{padding:10px 20px;border-radius:12px;border:none;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;cursor:pointer;transition:all 0.2s;}
+
+/* ── SEAT PICKER ── */
+.seat-grid{display:grid;gap:6px;margin:16px 0;}
+.seat-row{display:flex;gap:5px;align-items:center;justify-content:center;}
+.seat-row-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);width:18px;text-align:center;flex-shrink:0;}
+.seat{width:30px;height:28px;border-radius:6px;cursor:pointer;border:1px solid;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;transition:all 0.15s;font-family:'JetBrains Mono',monospace;}
+.seat.avail{background:rgba(74,222,128,0.08);border-color:rgba(74,222,128,0.3);color:var(--green);}
+.seat.avail:hover{background:rgba(74,222,128,0.2);transform:scale(1.1);}
+.seat.taken{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:var(--muted);cursor:not-allowed;}
+.seat.selected{background:var(--gold);border-color:var(--gold-dark);color:#1a0a00;}
+.seat-aisle{width:20px;}
+.seat-legend{display:flex;gap:16px;margin-top:10px;justify-content:center;}
+.sl-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);}
+.sl-dot{width:14px;height:14px;border-radius:4px;}
+
+/* ── BOARDING PASS ── */
+.boarding-pass{background:linear-gradient(135deg,rgba(7,16,7,0.95),rgba(5,46,22,0.4));border:1px solid rgba(245,200,66,0.3);border-radius:18px;overflow:hidden;position:relative;}
+.bp-header{background:linear-gradient(135deg,rgba(245,200,66,0.15),rgba(74,222,128,0.08));padding:20px 24px;border-bottom:1px dashed rgba(255,255,255,0.08);}
+.bp-airline{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);margin-bottom:4px;}
+.bp-route{display:flex;align-items:center;gap:12px;margin-top:12px;}
+.bp-city{font-family:'Orbitron',monospace;font-size:26px;font-weight:900;color:var(--text);}
+.bp-arrow{font-size:18px;color:var(--muted);}
+.bp-body{padding:18px 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.bp-field{;}
+.bp-field-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;margin-bottom:4px;}
+.bp-field-val{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--text);}
+.bp-footer{padding:16px 24px;border-top:1px dashed rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;}
+.bp-barcode{display:flex;gap:2px;align-items:flex-end;}
+.bp-bar{background:var(--green);border-radius:1px;}
+.bp-qr{width:52px;height:52px;background:rgba(74,222,128,0.1);border:1px solid var(--border2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+
+/* ── MY TICKETS ── */
+#my-tickets-page{position:relative;z-index:1;}
+.my-tickets-wrap{max-width:900px;margin:0 auto;padding:40px 28px 80px;}
+.booked-ticket{background:var(--bg2);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:16px;transition:border-color 0.2s;}
+.booked-ticket:hover{border-color:var(--border2);}
+.bt-header{padding:18px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.bt-title{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--text);}
+.bt-body{padding:18px 22px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;align-items:center;}
+.bt-field-label{font-size:9px;color:var(--muted);letter-spacing:2px;margin-bottom:4px;}
+.bt-field-val{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--text);}
+.bt-field-val.gold{color:var(--gold);}
+.bt-field-val.green{color:var(--green);}
+
+/* ── ADMIN ── */
+#admin-page{position:relative;z-index:1;}
+.admin-wrap{max-width:1200px;margin:0 auto;padding:40px 28px 80px;}
+.admin-topbar{background:rgba(168,85,247,0.07);border:1px solid rgba(168,85,247,0.2);border-radius:16px;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+.admin-badge{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--purple);letter-spacing:2px;}
+.a-tabs{display:flex;gap:6px;margin-bottom:28px;flex-wrap:wrap;}
+.a-tab{padding:9px 20px;border-radius:10px;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:all 0.2s;}
+.a-tab:hover,.a-tab.active{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.3);color:var(--green);}
+.a-sec{display:none;}
+.a-sec.active{display:block;}
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.ast{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px;}
+.ast-lbl{font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:6px;}
+.ast-val{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:var(--green);}
+.ast-val.gold{color:var(--gold);}
+.ast-val.purple{color:var(--purple);}
+.ast-val.blue{color:var(--blue);}
+.atbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:24px;}
+.atbl-hdr{padding:16px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.atbl-title{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--text);}
+.atbl{width:100%;border-collapse:collapse;}
+.atbl th{text-align:left;padding:11px 18px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--border);}
+.atbl td{padding:13px 18px;border-bottom:1px solid rgba(74,222,128,0.04);font-size:13px;color:var(--text2);vertical-align:middle;}
+.atbl tr:last-child td{border-bottom:none;}
+.atbl .mono{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;}
+.act-btn{padding:6px 12px;border-radius:7px;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;border:none;transition:all 0.2s;margin-right:4px;}
+.ab-green{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:var(--green);}
+.ab-red{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);color:var(--red);}
+.ab-gold{background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.25);color:var(--gold);}
+.ab-blue{background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);color:var(--blue);}
+
+/* CREATE FORM */
+.create-form{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:28px;}
+.form-title{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--green);letter-spacing:1px;padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:18px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.color-picker-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.cp-swatch{width:30px;height:30px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;}
+.cp-swatch:hover,.cp-swatch.sel{border-color:white;transform:scale(1.15);}
+
+/* TICKET PREVIEW */
+.ticket-preview-wrap{background:rgba(74,222,128,0.02);border:1px solid var(--border);border-radius:14px;padding:20px;margin-top:14px;}
+.tp-label{font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:14px;font-family:'JetBrains Mono',monospace;}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36px 28px;text-align:center;}
+.footer-logo{font-family:'Orbitron',monospace;font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.footer-text{font-size:11px;color:var(--muted);}
+.footer-links{display:flex;gap:20px;justify-content:center;margin:10px 0;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--muted);cursor:pointer;transition:color 0.2s;}
+.footer-link:hover{color:var(--green);}
+
+@media(max-width:900px){
+  .stats-band{grid-template-columns:repeat(3,1fr);}
+  .admin-stats{grid-template-columns:1fr 1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-grid-3{grid-template-columns:1fr 1fr;}
+  .bt-body{grid-template-columns:repeat(3,1fr);}
+}
+@media(max-width:600px){
+  nav .nav-cats{display:none;}
+  .hero-cats{gap:8px;}
+  .hero-cat-btn{padding:12px 14px;min-width:80px;}
+  .tickets-grid{grid-template-columns:1fr;}
+  .stats-band{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="site-bg">
+  <div class="bg-grid"></div><div class="bg-g1"></div><div class="bg-g2"></div><div class="bg-g3"></div><div class="bg-scan"></div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <div class="ti"><span class="ti-lbl">$VT</span><span class="ti-val">$0.0100</span><span class="ti-up">▲ +4.38%</span></div>
+    <div class="ti"><span class="ti-lbl">TICKETS SOLD</span><span class="ti-val">48,240</span><span class="ti-up">Today</span></div>
+    <div class="ti"><span class="ti-lbl">AIRLINES</span><span class="ti-val">24 Routes</span><span class="ti-up">● Live</span></div>
+    <div class="ti"><span class="ti-lbl">CRICKET</span><span class="ti-val">PSL 2026</span><span class="ti-up">On Sale</span></div>
+    <div class="ti"><span class="ti-lbl">CINEMAS</span><span class="ti-val">120 Shows</span><span class="ti-up">Today</span></div>
+    <div class="ti"><span class="ti-lbl">PLATFORM FEE</span><span class="ti-val">2%</span><span class="ti-up">$VT</span></div>
+    <div class="ti"><span class="ti-lbl">NETWORK</span><span class="ti-val">BNB Chain</span></div>
+    <div class="ti"><span class="ti-lbl">$VT</span><span class="ti-val">$0.0100</span><span class="ti-up">▲ +4.38%</span></div>
+    <div class="ti"><span class="ti-lbl">TICKETS SOLD</span><span class="ti-val">48,240</span><span class="ti-up">Today</span></div>
+    <div class="ti"><span class="ti-lbl">AIRLINES</span><span class="ti-val">24 Routes</span><span class="ti-up">● Live</span></div>
+    <div class="ti"><span class="ti-lbl">CRICKET</span><span class="ti-val">PSL 2026</span><span class="ti-up">On Sale</span></div>
+    <div class="ti"><span class="ti-lbl">CINEMAS</span><span class="ti-val">120 Shows</span><span class="ti-up">Today</span></div>
+    <div class="ti"><span class="ti-lbl">PLATFORM FEE</span><span class="ti-val">2%</span><span class="ti-up">$VT</span></div>
+    <div class="ti"><span class="ti-lbl">NETWORK</span><span class="ti-val">BNB Chain</span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-icon">🎟️</div>
+    <span class="nav-logo-text">VURA TICKET</span>
+  </div>
+  <div class="nav-cats">
+    <button class="nav-cat active" onclick="showPage('home');setNavActive(this)">🏠 Home</button>
+    <button class="nav-cat" onclick="showCat('airline');setNavActive(this)">✈️ Airlines</button>
+    <button class="nav-cat" onclick="showCat('train');setNavActive(this)">🚂 Trains</button>
+    <button class="nav-cat" onclick="showCat('bus');setNavActive(this)">🚌 Buses</button>
+    <button class="nav-cat" onclick="showCat('cinema');setNavActive(this)">🎬 Cinema</button>
+    <button class="nav-cat" onclick="showCat('cricket');setNavActive(this)">🏏 Cricket</button>
+    <button class="nav-cat" onclick="showCat('event');setNavActive(this)">🎪 Events</button>
+    <button class="nav-cat" onclick="showPage('my-tickets');setNavActive(this)">📋 My Tickets</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-bal"><span class="nb-dot"></span>5,200 VT</div>
+    <button class="nav-admin" onclick="showPage('admin');setNavActive(null)">⚙️ ADMIN</button>
+  </div>
+</nav>
+
+<!-- ════════════ HOME ════════════ -->
+<div id="home" class="page active">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Vura Ecosystem · Ticketing</div>
+      <div class="hero-h1">
+        <span class="g">Book Any Ticket</span>
+        <span class="gr">Pay with $VT</span>
+      </div>
+      <p class="hero-sub">Airlines, trains, buses, cinemas, cricket & events — all in one place. Every booking is <strong>on-chain</strong>, <strong>NFT-backed</strong>, and powered by <strong>$VT tokens</strong>.</p>
+      <div class="hero-cats">
+        <div class="hero-cat-btn" style="border-color:rgba(96,165,250,0.3);" onclick="showCat('airline')"><span class="hcb-icon">✈️</span><span class="hcb-label" style="color:var(--blue);">Airlines</span></div>
+        <div class="hero-cat-btn" style="border-color:rgba(251,146,60,0.3);" onclick="showCat('train')"><span class="hcb-icon">🚂</span><span class="hcb-label" style="color:var(--orange);">Trains</span></div>
+        <div class="hero-cat-btn" style="border-color:rgba(74,222,128,0.3);" onclick="showCat('bus')"><span class="hcb-icon">🚌</span><span class="hcb-label" style="color:var(--green);">Buses</span></div>
+        <div class="hero-cat-btn" style="border-color:rgba(244,114,182,0.3);" onclick="showCat('cinema')"><span class="hcb-icon">🎬</span><span class="hcb-label" style="color:var(--pink);">Cinema</span></div>
+        <div class="hero-cat-btn" style="border-color:rgba(34,211,238,0.3);" onclick="showCat('cricket')"><span class="hcb-icon">🏏</span><span class="hcb-label" style="color:var(--cyan);">Cricket</span></div>
+        <div class="hero-cat-btn" style="border-color:rgba(168,85,247,0.3);" onclick="showCat('event')"><span class="hcb-icon">🎪</span><span class="hcb-label" style="color:var(--purple);">Events</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-band">
+    <div class="sb-item"><span class="sb-val">48.2K</span><span class="sb-lbl">Tickets Sold</span></div>
+    <div class="sb-item"><span class="sb-val">24</span><span class="sb-lbl">Airline Routes</span></div>
+    <div class="sb-item"><span class="sb-val">120</span><span class="sb-lbl">Cinema Shows</span></div>
+    <div class="sb-item"><span class="sb-val">36</span><span class="sb-lbl">Events Live</span></div>
+    <div class="sb-item"><span class="sb-val">2%</span><span class="sb-lbl">Platform Fee</span></div>
+    <div class="sb-item"><span class="sb-val">$VT</span><span class="sb-lbl">Only Currency</span></div>
+  </div>
+
+  <!-- FEATURED SECTION -->
+  <div class="cat-section">
+    <div class="max-w">
+      <div class="section-tag">Featured Today</div>
+      <h2 class="section-title">Hot Tickets</h2>
+      <div class="tickets-grid" id="home-featured-grid" style="margin-top:28px;"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">VURA TICKET</div>
+    <div class="footer-links">
+      <span class="footer-link">Vura Ecosystem</span>
+      <span class="footer-link">Vura Marketplace</span>
+      <span class="footer-link">Vura Investments</span>
+      <span class="footer-link">Smart Contract</span>
+      <span class="footer-link">Telegram</span>
+    </div>
+    <div class="footer-text">© 2025–2027 Vura Ticket. Powered by $VT on BNB Chain. All rights reserved.</div>
+  </footer>
+</div>
+
+<!-- ════════════ CATEGORY PAGE ════════════ -->
+<div id="cat-page" class="page">
+  <div class="cat-section">
+    <div class="max-w">
+      <div id="cat-header" style="margin-bottom:28px;"></div>
+      <div class="search-row">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="cat-search" placeholder="Search tickets..." oninput="renderCatPage()">
+        </div>
+        <select class="sort-sel" id="cat-sort" onchange="renderCatPage()">
+          <option value="default">Sort: Default</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="date">Date: Soonest</option>
+        </select>
+      </div>
+      <div class="tickets-grid" id="cat-tickets-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ MY TICKETS ════════════ -->
+<div id="my-tickets" class="page">
+  <div class="my-tickets-wrap">
+    <div class="section-tag">My Account</div>
+    <h2 class="section-title">My Tickets</h2>
+    <p style="color:var(--text2);font-size:14px;margin-bottom:32px;">All your NFT-backed tickets on BNB Chain.</p>
+    <div id="my-tickets-list">
+      <div style="text-align:center;padding:60px 20px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:13px;">
+        No tickets yet. <span style="color:var(--green);cursor:pointer;" onclick="showPage('home')">Browse tickets →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ ADMIN ════════════ -->
+<div id="admin" class="page">
+  <div class="admin-wrap">
+    <div class="admin-topbar">
+      <div>
+        <div class="admin-badge">⚙️ ADMIN PANEL — VURA TICKET</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">@vura_admin · Super Admin · Full Access</div>
+      </div>
+      <span class="pill purple">● LIVE</span>
+    </div>
+    <div class="a-tabs">
+      <button class="a-tab active" onclick="aTab('overview',this)">📊 Overview</button>
+      <button class="a-tab" onclick="aTab('manage',this)">🗂 All Tickets</button>
+      <button class="a-tab" onclick="aTab('create',this)">➕ Create Ticket</button>
+      <button class="a-tab" onclick="aTab('bookings',this)">📋 Bookings</button>
+      <button class="a-tab" onclick="aTab('revenue',this)">💰 Revenue</button>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="asec-overview" class="a-sec active">
+      <div class="admin-stats">
+        <div class="ast"><div class="ast-lbl">TOTAL TICKETS</div><div class="ast-val" id="adm-total-tickets">0</div></div>
+        <div class="ast"><div class="ast-lbl">TOTAL BOOKINGS</div><div class="ast-val gold">12,480</div></div>
+        <div class="ast"><div class="ast-lbl">REVENUE (VT)</div><div class="ast-val purple">248K</div></div>
+        <div class="ast"><div class="ast-lbl">ACTIVE CATEGORIES</div><div class="ast-val blue">6</div></div>
+      </div>
+      <div class="atbl-wrap">
+        <div class="atbl-hdr"><div class="atbl-title">Recent Bookings</div><span class="pill green">● Live</span></div>
+        <table class="atbl">
+          <thead><tr><th>Ticket</th><th>Category</th><th>Buyer</th><th>Seats</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody id="adm-recent-bookings">
+            <tr><td>KHI → LHR</td><td><span class="pill blue">✈️ Airline</span></td><td>0x3f2...a91</td><td class="mono">2</td><td class="mono gold">400 VT</td><td><span class="pill green">Confirmed</span></td></tr>
+            <tr><td>PSL Final 2026</td><td><span class="pill cyan">🏏 Cricket</span></td><td>0x7c1...b44</td><td class="mono">4</td><td class="mono gold">800 VT</td><td><span class="pill green">Confirmed</span></td></tr>
+            <tr><td>Avengers: Endgame</td><td><span class="pill pink" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.3);color:var(--pink);">🎬 Cinema</span></td><td>0x9d8...f03</td><td class="mono">3</td><td class="mono gold">150 VT</td><td><span class="pill green">Confirmed</span></td></tr>
+            <tr><td>Lhr → ISL Express</td><td><span class="pill orange">🚂 Train</span></td><td>0x2a5...c77</td><td class="mono">1</td><td class="mono gold">60 VT</td><td><span class="pill blue">Pending</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MANAGE -->
+    <div id="asec-manage" class="a-sec">
+      <div class="atbl-wrap">
+        <div class="atbl-hdr">
+          <div class="atbl-title">All Tickets</div>
+          <button class="act-btn ab-green" onclick="aTab('create',document.querySelectorAll('.a-tab')[2])">+ Create New</button>
+        </div>
+        <table class="atbl">
+          <thead><tr><th>Title</th><th>Category</th><th>Date/Time</th><th>Price (VT)</th><th>Seats</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="adm-tickets-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CREATE -->
+    <div id="asec-create" class="a-sec">
+      <div class="create-form">
+        <div class="form-title">🎟️ Create New Ticket</div>
+        <div class="form-grid">
+          <div class="mfield">
+            <label>Ticket Title</label>
+            <input type="text" id="ct-title" placeholder="e.g. Karachi → Lahore" oninput="updateTicketPreview()">
+          </div>
+          <div class="mfield">
+            <label>Category</label>
+            <select id="ct-cat" onchange="updateTicketPreview();toggleCatFields()">
+              <option value="airline">✈️ Airline</option>
+              <option value="train">🚂 Train</option>
+              <option value="bus">🚌 Bus</option>
+              <option value="cinema">🎬 Cinema</option>
+              <option value="cricket">🏏 Cricket</option>
+              <option value="event">🎪 Event</option>
+            </select>
+          </div>
+          <div class="mfield">
+            <label>Date</label>
+            <input type="date" id="ct-date" oninput="updateTicketPreview()">
+          </div>
+          <div class="mfield">
+            <label>Time</label>
+            <input type="time" id="ct-time" oninput="updateTicketPreview()">
+          </div>
+          <div class="mfield">
+            <label>Price per Seat (VT)</label>
+            <input type="number" id="ct-price" placeholder="200" oninput="updateTicketPreview()">
+          </div>
+          <div class="mfield">
+            <label>Total Seats</label>
+            <input type="number" id="ct-seats" placeholder="50" oninput="updateTicketPreview()">
+          </div>
+        </div>
+
+        <!-- AIRLINE FIELDS -->
+        <div id="cf-airline" class="cat-fields">
+          <div class="form-title" style="margin-top:18px;">✈️ Flight Details</div>
+          <div class="form-grid-3">
+            <div class="mfield"><label>From (City/Code)</label><input type="text" id="ct-from" placeholder="KHI" oninput="updateTicketPreview()"></div>
+            <div class="mfield"><label>To (City/Code)</label><input type="text" id="ct-to" placeholder="LHR" oninput="updateTicketPreview()"></div>
+            <div class="mfield"><label>Airline Name</label><input type="text" id="ct-airline" placeholder="PIA / AirBlue" oninput="updateTicketPreview()"></div>
+            <div class="mfield"><label>Flight No.</label><input type="text" id="ct-flightno" placeholder="PK-300" oninput="updateTicketPreview()"></div>
+            <div class="mfield"><label>Class</label>
+              <select id="ct-class"><option>Economy</option><option>Business</option><option>First Class</option></select>
+            </div>
+            <div class="mfield"><label>Duration</label><input type="text" id="ct-duration" placeholder="1h 20m"></div>
+          </div>
+        </div>
+
+        <!-- TRAIN FIELDS -->
+        <div id="cf-train" class="cat-fields" style="display:none;">
+          <div class="form-title" style="margin-top:18px;">🚂 Train Details</div>
+          <div class="form-grid-3">
+            <div class="mfield"><label>From Station</label><input type="text" id="ct-train-from" placeholder="Lahore"></div>
+            <div class="mfield"><label>To Station</label><input type="text" id="ct-train-to" placeholder="Islamabad"></div>
+            <div class="mfield"><label>Train Name</label><input type="text" id="ct-train-name" placeholder="Green Line Express"></div>
+            <div class="mfield"><label>Class</label><select id="ct-train-class"><option>Economy</option><option>AC Sleeper</option><option>Business</option></select></div>
+            <div class="mfield"><label>Duration</label><input type="text" id="ct-train-dur" placeholder="4h 30m"></div>
+            <div class="mfield"><label>Train No.</label><input type="text" id="ct-train-no" placeholder="14-UP"></div>
+          </div>
+        </div>
+
+        <!-- BUS FIELDS -->
+        <div id="cf-bus" class="cat-fields" style="display:none;">
+          <div class="form-title" style="margin-top:18px;">🚌 Bus Details</div>
+          <div class="form-grid-3">
+            <div class="mfield"><label>From City</label><input type="text" id="ct-bus-from" placeholder="Karachi"></div>
+            <div class="mfield"><label>To City</label><input type="text" id="ct-bus-to" placeholder="Hyderabad"></div>
+            <div class="mfield"><label>Bus Operator</label><input type="text" id="ct-bus-op" placeholder="Daewoo / Faisal Movers"></div>
+            <div class="mfield"><label>Bus Type</label><select id="ct-bus-type"><option>Standard</option><option>Business</option><option>Sleeper</option></select></div>
+            <div class="mfield"><label>Duration</label><input type="text" id="ct-bus-dur" placeholder="2h 30m"></div>
+            <div class="mfield"><label>Bus No.</label><input type="text" id="ct-bus-no" placeholder="DW-042"></div>
+          </div>
+        </div>
+
+        <!-- CINEMA FIELDS -->
+        <div id="cf-cinema" class="cat-fields" style="display:none;">
+          <div class="form-title" style="margin-top:18px;">🎬 Cinema Details</div>
+          <div class="form-grid-3">
+            <div class="mfield"><label>Movie Name</label><input type="text" id="ct-movie" placeholder="Movie Title" oninput="updateTicketPreview()"></div>
+            <div class="mfield"><label>Cinema Name</label><input type="text" id="ct-cinema" placeholder="Cinepax / Nueplex"></div>
+            <div class="mfield"><label>Language</label><select id="ct-lang"><option>English</option><option>Urdu</option><option>Hindi</option><option>Subtitled</option></select></div>
+            <div class="mfield"><label>Screen / Hall</label><input type="text" id="ct-screen" placeholder="Screen 3 — IMAX"></div>
+            <div class="mfield"><label>Genre</label><input type="text" id="ct-genre" placeholder="Action / Drama / Comedy"></div>
+            <div class="mfield"><label>Rating</label><select id="ct-rating"><option>U</option><option>PG</option><option>15</option><option>18</option></select></div>
+          </div>
+        </div>
+
+        <!-- CRICKET FIELDS -->
+        <div id="cf-cricket" class="cat-fields" style="display:none;">
+          <div class="form-title" style="margin-top:18px;">🏏 Cricket Match Details</div>
+          <div class="form-grid-3">
+            <div class="mfield"><label>Team A</label><input type="text" id="ct-teamA" placeholder="Karachi Kings"></div>
+            <div class="mfield"><label>Team B</label><input type="text" id="ct-teamB" placeholder="Lahore Qalandars"></div>
+            <div class="mfield"><label>Stadium</label><input type="text" id="ct-stadium" placeholder="National Stadium Karachi"></div>
+            <div class="mfield"><label>Tournament</label><input type="text" id="ct-tourney" placeholder="PSL 2026 · Final"></div>
+            <div class="mfield"><label>Format</label><select id="ct-format"><option>T20</option><option>ODI</option><option>Test</option></select></div>
+            <div class="mfield"><label>Stand / Zone</label><input type="text" id="ct-stand" placeholder="General / VIP / VVIP"></div>
+          </div>
+        </div>
+
+        <!-- EVENT FIELDS -->
+        <div id="cf-event" class="cat-fields" style="display:none;">
+          <div class="form-title" style="margin-top:18px;">🎪 Event Details</div>
+          <div class="form-grid-3">
+            <div class="mfield"><label>Event Name</label><input type="text" id="ct-event-name" placeholder="Concert / Expo / Conference"></div>
+            <div class="mfield"><label>Venue</label><input type="text" id="ct-venue" placeholder="Expo Centre Karachi"></div>
+            <div class="mfield"><label>Organizer</label><input type="text" id="ct-organizer" placeholder="Organizer Name"></div>
+            <div class="mfield"><label>Event Type</label><select id="ct-etype"><option>Concert</option><option>Conference</option><option>Festival</option><option>Exhibition</option><option>Sports</option><option>Other</option></select></div>
+            <div class="mfield"><label>City</label><input type="text" id="ct-ecity" placeholder="Karachi"></div>
+            <div class="mfield"><label>Ticket Tier</label><select id="ct-etier"><option>General</option><option>VIP</option><option>VVIP</option><option>Backstage</option></select></div>
+          </div>
+        </div>
+
+        <div class="form-title" style="margin-top:20px;">🎨 Banner Color</div>
+        <div class="color-picker-row" id="banner-colors">
+          <div class="cp-swatch sel" style="background:linear-gradient(135deg,#1a3a5c,#2563eb);" data-grad="linear-gradient(135deg,#1a3a5c,#2563eb)" onclick="selectGrad(this)"></div>
+          <div class="cp-swatch" style="background:linear-gradient(135deg,#1a4a2e,#22c55e);" data-grad="linear-gradient(135deg,#1a4a2e,#22c55e)" onclick="selectGrad(this)"></div>
+          <div class="cp-swatch" style="background:linear-gradient(135deg,#4a1a2e,#ec4899);" data-grad="linear-gradient(135deg,#4a1a2e,#ec4899)" onclick="selectGrad(this)"></div>
+          <div class="cp-swatch" style="background:linear-gradient(135deg,#3a1a00,#f97316);" data-grad="linear-gradient(135deg,#3a1a00,#f97316)" onclick="selectGrad(this)"></div>
+          <div class="cp-swatch" style="background:linear-gradient(135deg,#1a1a3a,#7c3aed);" data-grad="linear-gradient(135deg,#1a1a3a,#7c3aed)" onclick="selectGrad(this)"></div>
+          <div class="cp-swatch" style="background:linear-gradient(135deg,#083344,#06b6d4);" data-grad="linear-gradient(135deg,#083344,#06b6d4)" onclick="selectGrad(this)"></div>
+          <div class="cp-swatch" style="background:linear-gradient(135deg,#3a1a00,#f5c842);" data-grad="linear-gradient(135deg,#3a1a00,#f5c842)" onclick="selectGrad(this)"></div>
+          <div class="cp-swatch" style="background:linear-gradient(135deg,#1a0a0a,#ef4444);" data-grad="linear-gradient(135deg,#1a0a0a,#ef4444)" onclick="selectGrad(this)"></div>
+        </div>
+
+        <div class="form-title" style="margin-top:20px;">📝 Description</div>
+        <div class="mfield">
+          <textarea id="ct-desc" rows="3" placeholder="Brief description of this ticket..."></textarea>
+        </div>
+        <div class="mfield">
+          <label>Featured Ticket?</label>
+          <select id="ct-featured"><option value="no">No</option><option value="yes">Yes — Show on Home</option></select>
+        </div>
+
+        <div class="form-title" style="margin-top:20px;">👁 Preview</div>
+        <div id="ticket-preview-container" style="max-width:340px;"></div>
+
+        <button class="mbtn mbtn-gold" style="margin-top:20px;" onclick="createTicket()">🚀 PUBLISH TICKET</button>
+      </div>
+    </div>
+
+    <!-- BOOKINGS -->
+    <div id="asec-bookings" class="a-sec">
+      <div class="atbl-wrap">
+        <div class="atbl-hdr"><div class="atbl-title">All Bookings</div><span class="pill green">Live</span></div>
+        <table class="atbl">
+          <thead><tr><th>Booking ID</th><th>Ticket</th><th>Category</th><th>Buyer</th><th>Seats</th><th>Total VT</th><th>Status</th></tr></thead>
+          <tbody id="adm-all-bookings">
+            <tr><td class="mono">#VTK-0001</td><td>KHI → LHR</td><td><span class="pill blue">✈️ Airline</span></td><td>0x3f2...a91</td><td class="mono">2</td><td class="mono gold">400 VT</td><td><span class="pill green">Confirmed</span></td></tr>
+            <tr><td class="mono">#VTK-0002</td><td>PSL Final 2026</td><td><span class="pill cyan">🏏 Cricket</span></td><td>0x7c1...b44</td><td class="mono">4</td><td class="mono gold">800 VT</td><td><span class="pill green">Confirmed</span></td></tr>
+            <tr><td class="mono">#VTK-0003</td><td>Avengers IMAX</td><td><span class="pill pink" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.3);color:var(--pink);">🎬 Cinema</span></td><td>0x9d8...f03</td><td class="mono">3</td><td class="mono gold">150 VT</td><td><span class="pill green">Confirmed</span></td></tr>
+            <tr><td class="mono">#VTK-0004</td><td>LHR → ISL Express</td><td><span class="pill orange">🚂 Train</span></td><td>0x2a5...c77</td><td class="mono">1</td><td class="mono gold">60 VT</td><td><span class="pill blue">Pending</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REVENUE -->
+    <div id="asec-revenue" class="a-sec">
+      <div class="admin-stats" style="grid-template-columns:repeat(3,1fr);">
+        <div class="ast"><div class="ast-lbl">TOTAL REVENUE</div><div class="ast-val gold">248K VT</div></div>
+        <div class="ast"><div class="ast-lbl">VT BURNED</div><div class="ast-val">12.4K VT</div></div>
+        <div class="ast"><div class="ast-lbl">USDT EQUIV.</div><div class="ast-val purple">$2,480</div></div>
+      </div>
+      <div class="atbl-wrap">
+        <div class="atbl-hdr"><div class="atbl-title">Revenue by Category</div></div>
+        <table class="atbl">
+          <thead><tr><th>Category</th><th>Tickets</th><th>Bookings</th><th>Revenue (VT)</th><th>Platform Fee</th></tr></thead>
+          <tbody>
+            <tr><td>✈️ Airlines</td><td class="mono">24</td><td class="mono">4,200</td><td class="mono gold">84,000 VT</td><td class="mono green">1,680 VT</td></tr>
+            <tr><td>🏏 Cricket</td><td class="mono">18</td><td class="mono">3,800</td><td class="mono gold">76,000 VT</td><td class="mono green">1,520 VT</td></tr>
+            <tr><td>🎬 Cinema</td><td class="mono">120</td><td class="mono">2,400</td><td class="mono gold">48,000 VT</td><td class="mono green">960 VT</td></tr>
+            <tr><td>🎪 Events</td><td class="mono">36</td><td class="mono">1,200</td><td class="mono gold">24,000 VT</td><td class="mono green">480 VT</td></tr>
+            <tr><td>🚂 Trains</td><td class="mono">48</td><td class="mono">560</td><td class="mono gold">11,200 VT</td><td class="mono green">224 VT</td></tr>
+            <tr><td>🚌 Buses</td><td class="mono">60</td><td class="mono">320</td><td class="mono gold">4,800 VT</td><td class="mono green">96 VT</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOK MODAL -->
+<div class="overlay" id="book-modal">
+  <div class="modal" style="max-width:600px;">
+    <div class="modal-hdr">
+      <div class="modal-title" id="book-modal-title">BOOK TICKET</div>
+      <div class="modal-close" onclick="closeModal('book-modal')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div id="book-ticket-info" style="background:rgba(74,222,128,0.04);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px;"></div>
+      <div style="margin-bottom:16px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:12px;">SELECT SEATS</div>
+        <div id="seat-picker-container"></div>
+        <div class="seat-legend">
+          <div class="sl-item"><div class="sl-dot" style="background:rgba(74,222,128,0.3);border:1px solid rgba(74,222,128,0.4);"></div>Available</div>
+          <div class="sl-item"><div class="sl-dot" style="background:var(--gold);"></div>Selected</div>
+          <div class="sl-item"><div class="sl-dot" style="background:rgba(255,255,255,0.06);"></div>Taken</div>
+        </div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div class="mfee-row"><span class="mfee-label">Selected Seats</span><span class="mfee-val" id="bk-seats">None</span></div>
+        <div class="mfee-row"><span class="mfee-label">Price per Seat</span><span class="mfee-val" id="bk-unit-price">0 VT</span></div>
+        <div class="mfee-row"><span class="mfee-label">Platform Fee (2%)</span><span class="mfee-val" id="bk-fee">0 VT</span></div>
+        <div class="mfee-row"><span class="mfee-label">Total</span><span class="mfee-val" id="bk-total" style="font-size:18px;color:var(--green);">0 VT</span></div>
+      </div>
+      <button class="mbtn mbtn-gold" onclick="confirmBooking()">🎟️ CONFIRM BOOKING</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOARDING PASS MODAL -->
+<div class="overlay" id="pass-modal">
+  <div class="modal" style="max-width:540px;">
+    <div class="modal-hdr">
+      <div class="modal-title">🎟️ YOUR TICKET</div>
+      <div class="modal-close" onclick="closeModal('pass-modal')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div id="boarding-pass-content"></div>
+      <button class="mbtn mbtn-green" style="margin-top:16px;" onclick="closeModal('pass-modal');showPage('my-tickets')">📋 VIEW MY TICKETS</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─────────────────────────────
+//  DATA
+// ─────────────────────────────
+const CAT_META = {
+  airline:{label:'Airlines',icon:'✈️',pill:'blue',pillStyle:'pill blue',color:getComputedStyle(document.documentElement).getPropertyValue('--blue').trim()||'#60a5fa'},
+  train:  {label:'Trains', icon:'🚂',pill:'orange',pillStyle:'pill orange',color:'#fb923c'},
+  bus:    {label:'Buses',  icon:'🚌',pill:'green',pillStyle:'pill green',color:'#4ade80'},
+  cinema: {label:'Cinema', icon:'🎬',pillStyle:'pill pink',color:'#f472b6',customPill:true},
+  cricket:{label:'Cricket',icon:'🏏',pillStyle:'pill cyan',color:'#22d3ee',customPill:true},
+  event:  {label:'Events', icon:'🎪',pill:'purple',pillStyle:'pill purple',color:'#a855f7'},
+};
+
+let tickets = [
+  {id:1,cat:'airline',title:'Karachi → Lahore',subtitle:'PIA · PK-300 · Economy',date:'2026-06-10',time:'08:30',price:200,seats:48,takenSeats:[2,5,9,15,22,31],banner:'linear-gradient(135deg,#1a3a5c,#2563eb)',icon:'✈️',desc:'Direct flight from Jinnah International to Allama Iqbal. 1h 20m. Free meal included.',featured:true,extra:{from:'KHI',to:'LHR',airline:'PIA',flightNo:'PK-300',class:'Economy',duration:'1h 20m'}},
+  {id:2,cat:'airline',title:'Lahore → Islamabad',subtitle:'AirBlue · PA-240 · Business',date:'2026-06-11',time:'10:00',price:350,seats:30,takenSeats:[1,4,8,12],banner:'linear-gradient(135deg,#0a2a4a,#0ea5e9)',icon:'✈️',desc:'Business class service with premium lounge access. 45 min flight.',featured:false,extra:{from:'LHR',to:'ISB',airline:'AirBlue',flightNo:'PA-240',class:'Business',duration:'45m'}},
+  {id:3,cat:'train',title:'Lahore → Islamabad Express',subtitle:'Green Line · 14-UP · AC Sleeper',date:'2026-06-12',time:'07:00',price:60,seats:80,takenSeats:[3,6,11,20,35,44,55,60],banner:'linear-gradient(135deg,#1a3a00,#22c55e)',icon:'🚂',desc:'Green Line Express — fastest train on the LHR–ISB route. Comfortable AC Sleeper.',featured:true,extra:{from:'Lahore',to:'Islamabad',train:'Green Line',trainNo:'14-UP',class:'AC Sleeper',duration:'4h 30m'}},
+  {id:4,cat:'train',title:'Karachi → Hyderabad',subtitle:'Sir Syed Express · Economy',date:'2026-06-13',time:'06:30',price:40,seats:100,takenSeats:[10,20,30,40,50],banner:'linear-gradient(135deg,#2a1a00,#f97316)',icon:'🚂',desc:'Daily service from City Station. 2h journey.',featured:false,extra:{from:'Karachi',to:'Hyderabad',train:'Sir Syed Exp',trainNo:'6-UP',class:'Economy',duration:'2h 00m'}},
+  {id:5,cat:'bus',title:'Karachi → Hyderabad',subtitle:'Daewoo · Business Class',date:'2026-06-10',time:'09:00',price:35,seats:44,takenSeats:[1,5,12,18,22,30],banner:'linear-gradient(135deg,#052e16,#16a34a)',icon:'🚌',desc:'Comfortable Daewoo Business Class bus. Onboard WiFi & snacks.',featured:false,extra:{from:'Karachi',to:'Hyderabad',operator:'Daewoo',busType:'Business',busNo:'DW-042',duration:'2h 30m'}},
+  {id:6,cat:'bus',title:'Lahore → Multan',subtitle:'Faisal Movers · Sleeper',date:'2026-06-11',time:'22:00',price:55,seats:36,takenSeats:[2,4,8,10,14],banner:'linear-gradient(135deg,#1a2a00,#84cc16)',icon:'🚌',desc:'Overnight sleeper service. Departs at 10 PM, arrives 5 AM.',featured:false,extra:{from:'Lahore',to:'Multan',operator:'Faisal Movers',busType:'Sleeper',busNo:'FM-118',duration:'7h 00m'}},
+  {id:7,cat:'cinema',title:'Mission Impossible 8',subtitle:'Cinepax · IMAX · English',date:'2026-06-10',time:'19:30',price:50,seats:120,takenSeats:[4,8,12,22,33,44,55,66,77,88],banner:'linear-gradient(135deg,#4a0a20,#ec4899)',icon:'🎬',desc:'Action-packed spy thriller. IMAX experience. 2h 45m runtime.',featured:true,extra:{movie:'Mission Impossible 8',cinema:'Cinepax Karachi',lang:'English',screen:'IMAX Hall 1',genre:'Action / Thriller',pgRating:'PG'}},
+  {id:8,cat:'cinema',title:'Jawani Phir Nahi Aani 3',subtitle:'Nueplex · Standard · Urdu',date:'2026-06-10',time:'21:00',price:40,seats:160,takenSeats:[5,15,25,35,45,55,65,75],banner:'linear-gradient(135deg,#2a0a3a,#9333ea)',icon:'🎬',desc:'The blockbuster comedy returns for part 3. Family entertainer.',featured:false,extra:{movie:'JPNA 3',cinema:'Nueplex DHA',lang:'Urdu',screen:'Screen 2',genre:'Comedy / Drama',pgRating:'U'}},
+  {id:9,cat:'cricket',title:'PSL Final 2026',subtitle:'Karachi Kings vs Lahore Qalandars',date:'2026-06-15',time:'19:00',price:200,seats:32000,takenSeats:[...Array(28000).keys()].map(i=>i+1),banner:'linear-gradient(135deg,#083344,#06b6d4)',icon:'🏏',desc:'The most awaited PSL final at National Stadium Karachi. T20 format. General enclosure.',featured:true,extra:{teamA:'Karachi Kings',teamB:'Lahore Qalandars',stadium:'National Stadium Karachi',tourney:'PSL 2026 Final',format:'T20',stand:'General'}},
+  {id:10,cat:'cricket',title:'Pakistan vs India T20I',subtitle:'National Stadium · VIP Stand',date:'2026-07-01',time:'15:00',price:500,seats:5000,takenSeats:[...Array(4200).keys()].map(i=>i+1),banner:'linear-gradient(135deg,#1a0a3a,#4f46e5)',icon:'🏏',desc:'The biggest rivalry returns to Pakistani soil. VIP stand experience.',featured:true,extra:{teamA:'Pakistan',teamB:'India',stadium:'National Stadium KHI',tourney:'Asia T20 Series',format:'T20I',stand:'VIP'}},
+  {id:11,cat:'event',title:'Web3 Pakistan Summit 2026',subtitle:'Expo Centre Karachi · Conference',date:'2026-06-20',time:'10:00',price:300,seats:2000,takenSeats:[...Array(1400).keys()].map(i=>i+1),banner:'linear-gradient(135deg,#1a1a3a,#7c3aed)',icon:'🎪',desc:'Pakistan largest Web3 & blockchain conference. 50+ speakers. Workshops & networking.',featured:true,extra:{eventName:'Web3 Pakistan Summit',venue:'Expo Centre Karachi',organizer:'Vura Foundation',etype:'Conference',city:'Karachi',tier:'General'}},
+  {id:12,cat:'event',title:'Atif Aslam Live Concert',subtitle:'Karachi · VIP Tickets',date:'2026-06-28',time:'20:00',price:800,seats:10000,takenSeats:[...Array(8500).keys()].map(i=>i+1),banner:'linear-gradient(135deg,#3a0a00,#f97316)',icon:'🎪',desc:'The iconic vocalist Atif Aslam live in Karachi. VIP floor tickets available.',featured:true,extra:{eventName:'Atif Aslam Live',venue:'Moin Khan Academy',organizer:'VN Events',etype:'Concert',city:'Karachi',tier:'VIP'}},
+];
+
+let myBookings = [];
+let currentTicket = null;
+let selectedSeats = [];
+let currentCat = 'airline';
+let selectedGradient = 'linear-gradient(135deg,#1a3a5c,#2563eb)';
+
+// ─────────────────────────────
+//  NAV
+// ─────────────────────────────
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='my-tickets') renderMyTickets();
+  if(id==='admin') renderAdminTables();
+}
+function setNavActive(el){
+  document.querySelectorAll('.nav-cat').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+}
+function showCat(cat){
+  currentCat = cat;
+  showPage('cat-page');
+  renderCatPage();
+}
+
+// ─────────────────────────────
+//  RENDER
+// ─────────────────────────────
+function seatsLeft(t){
+  return t.seats - t.takenSeats.length;
+}
+function catPillHTML(cat){
+  const m = CAT_META[cat];
+  if(m.customPill){
+    const colors={cinema:'rgba(244,114,182,0.1)|rgba(244,114,182,0.3)|#f472b6',cricket:'rgba(34,211,238,0.1)|rgba(34,211,238,0.25)|#22d3ee'};
+    const [bg,bc,tc]=colors[cat].split('|');
+    return `<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;background:${bg};border:1px solid ${bc};color:${tc};">${m.icon} ${m.label}</span>`;
+  }
+  return `<span class="${m.pillStyle}">${m.icon} ${m.label}</span>`;
+}
+function btnStyle(cat){
+  const cols={airline:'background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.3);color:#60a5fa;',train:'background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.3);color:#fb923c;',bus:'background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;',cinema:'background:rgba(244,114,182,0.15);border:1px solid rgba(244,114,182,0.3);color:#f472b6;',cricket:'background:rgba(34,211,238,0.15);border:1px solid rgba(34,211,238,0.3);color:#22d3ee;',event:'background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);color:#a855f7;'};
+  return cols[cat]||cols.event;
+}
+function ticketCardHTML(t){
+  const left = seatsLeft(t);
+  const pct = Math.round((t.takenSeats.length/t.seats)*100);
+  let subInfo = '';
+  if(t.extra){
+    if(t.cat==='airline'||t.cat==='train'||t.cat==='bus') subInfo=`<div class="tc-meta-item">📍 ${t.extra.from||''} → ${t.extra.to||''}</div>`;
+    if(t.cat==='cricket') subInfo=`<div class="tc-meta-item">🏟 ${t.extra.stadium}</div>`;
+    if(t.cat==='cinema') subInfo=`<div class="tc-meta-item">🎭 ${t.extra.cinema||''}</div>`;
+    if(t.cat==='event') subInfo=`<div class="tc-meta-item">📍 ${t.extra.venue||''}</div>`;
+  }
+  return `<div class="ticket-card" onclick="openBook(${t.id})">
+    <div class="tc-banner">
+      <div class="tc-banner-bg" style="background:${t.banner}"></div>
+      <div class="tc-banner-emoji">${t.icon}</div>
+      <div class="tc-banner-overlay"></div>
+      <div class="tc-badge" style="${btnStyle(t.cat)}">${catPillHTML(t.cat)}</div>
+      <div class="tc-seats-left">${left.toLocaleString()} seats left</div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-title">${t.title}</div>
+      <div class="tc-meta">
+        <div class="tc-meta-item">📅 ${fmtDate(t.date)}</div>
+        <div class="tc-meta-item">🕐 ${t.time}</div>
+        ${subInfo}
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">${t.subtitle}</div>
+      <div style="height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;margin-bottom:14px;">
+        <div style="height:100%;width:${pct}%;background:${pct>80?'#f87171':pct>50?'#fb923c':'#4ade80'};border-radius:2px;"></div>
+      </div>
+      <div class="tc-footer">
+        <div>
+          <div class="tc-price">${t.price.toLocaleString()} VT</div>
+          <div class="tc-price-sub">per seat · ≈ $${(t.price*0.01).toFixed(2)}</div>
+        </div>
+        <button class="tc-book-btn" style="${btnStyle(t.cat)};border-radius:12px;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1px;padding:10px 18px;cursor:pointer;" onclick="event.stopPropagation();openBook(${t.id})">BOOK NOW</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function fmtDate(d){
+  if(!d) return '—';
+  const dt = new Date(d+'T00:00:00');
+  return dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+
+function renderHome(){
+  const featured = tickets.filter(t=>t.featured).slice(0,6);
+  document.getElementById('home-featured-grid').innerHTML = featured.map(ticketCardHTML).join('');
+}
+
+function renderCatPage(){
+  const m = CAT_META[currentCat];
+  const search = (document.getElementById('cat-search')||{value:''}).value.toLowerCase();
+  const sort = (document.getElementById('cat-sort')||{value:'default'}).value;
+  let hdr = document.getElementById('cat-header');
+  hdr.innerHTML = `<div class="section-tag">${m.icon} ${m.label}</div><h2 class="section-title">${m.icon} ${m.label} Tickets</h2>`;
+
+  let filtered = tickets.filter(t=>t.cat===currentCat);
+  if(search) filtered = filtered.filter(t=>t.title.toLowerCase().includes(search)||t.subtitle.toLowerCase().includes(search));
+  if(sort==='price-asc') filtered.sort((a,b)=>a.price-b.price);
+  if(sort==='price-desc') filtered.sort((a,b)=>b.price-a.price);
+  if(sort==='date') filtered.sort((a,b)=>new Date(a.date)-new Date(b.date));
+
+  const grid = document.getElementById('cat-tickets-grid');
+  grid.innerHTML = filtered.length ? filtered.map(ticketCardHTML).join('') :
+    `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);font-family:'JetBrains Mono',monospace;">No tickets found.</div>`;
+}
+
+// ─────────────────────────────
+//  SEAT PICKER
+// ─────────────────────────────
+function buildSeatPicker(ticket){
+  const totalDisplay = Math.min(ticket.seats, 40);
+  const cols = ticket.cat==='cinema' ? 10 : ticket.cat==='cricket'||ticket.cat==='event' ? 10 : 8;
+  const rows = Math.ceil(totalDisplay/cols);
+  const rowLabels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let html = `<div class="seat-grid" style="grid-template-columns:auto repeat(${cols},1fr);">`;
+  for(let r=0;r<rows;r++){
+    html += `<div class="seat-row">`;
+    html += `<div class="seat-row-label">${rowLabels[r]}</div>`;
+    for(let c=1;c<=cols;c++){
+      const seatNum = r*cols+c;
+      if(seatNum>totalDisplay){html+=`<div></div>`;continue;}
+      const taken = ticket.takenSeats.includes(seatNum);
+      html += `<div class="seat ${taken?'taken':'avail'}" id="seat-${seatNum}" onclick="${taken?'':('toggleSeat('+seatNum+')')}">${seatNum}</div>`;
+    }
+    html += `</div>`;
+  }
+  html += `</div>`;
+  if(ticket.seats > 40) html += `<div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;">Showing 40 of ${ticket.seats.toLocaleString()} seats · Remaining: ${seatsLeft(ticket).toLocaleString()}</div>`;
+  return html;
+}
+
+function toggleSeat(num){
+  const el = document.getElementById('seat-'+num);
+  if(!el||el.classList.contains('taken')) return;
+  const idx = selectedSeats.indexOf(num);
+  if(idx>=0){ selectedSeats.splice(idx,1); el.classList.remove('selected'); el.classList.add('avail'); }
+  else { selectedSeats.push(num); el.classList.remove('avail'); el.classList.add('selected'); }
+  updateBookSummary();
+}
+
+function updateBookSummary(){
+  if(!currentTicket) return;
+  const n = selectedSeats.length;
+  const sub = currentTicket.price * n;
+  const fee = Math.round(sub*0.02);
+  const total = sub+fee;
+  document.getElementById('bk-seats').textContent = n ? selectedSeats.map(s=>{
+    const cols = currentTicket.cat==='cinema'||currentTicket.cat==='cricket'||currentTicket.cat==='event' ? 10 : 8;
+    const row = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor((s-1)/cols)];
+    return row+(((s-1)%cols)+1);
+  }).join(', ') : 'None';
+  document.getElementById('bk-unit-price').textContent = currentTicket.price+' VT';
+  document.getElementById('bk-fee').textContent = fee+' VT';
+  document.getElementById('bk-total').textContent = total+' VT';
+}
+
+// ─────────────────────────────
+//  BOOK MODAL
+// ─────────────────────────────
+function openBook(id){
+  currentTicket = tickets.find(t=>t.id===id);
+  if(!currentTicket) return;
+  selectedSeats = [];
+  const m = CAT_META[currentTicket.cat];
+
+  let extraHTML = '';
+  if(currentTicket.extra){
+    const e = currentTicket.extra;
+    if(currentTicket.cat==='airline') extraHTML=`<div class="mfee-row"><span class="mfee-label">Route</span><span class="mfee-val">${e.from} → ${e.to}</span></div><div class="mfee-row"><span class="mfee-label">Flight / Class</span><span class="mfee-val">${e.flightNo} · ${e.class}</span></div><div class="mfee-row"><span class="mfee-label">Duration</span><span class="mfee-val">${e.duration}</span></div>`;
+    if(currentTicket.cat==='train') extraHTML=`<div class="mfee-row"><span class="mfee-label">Route</span><span class="mfee-val">${e.from} → ${e.to}</span></div><div class="mfee-row"><span class="mfee-label">Train / Class</span><span class="mfee-val">${e.train} · ${e.class}</span></div>`;
+    if(currentTicket.cat==='bus') extraHTML=`<div class="mfee-row"><span class="mfee-label">Route</span><span class="mfee-val">${e.from} → ${e.to}</span></div><div class="mfee-row"><span class="mfee-label">Operator</span><span class="mfee-val">${e.operator}</span></div>`;
+    if(currentTicket.cat==='cinema') extraHTML=`<div class="mfee-row"><span class="mfee-label">Movie</span><span class="mfee-val">${e.movie}</span></div><div class="mfee-row"><span class="mfee-label">Cinema / Screen</span><span class="mfee-val">${e.cinema} · ${e.screen}</span></div>`;
+    if(currentTicket.cat==='cricket') extraHTML=`<div class="mfee-row"><span class="mfee-label">Match</span><span class="mfee-val">${e.teamA} vs ${e.teamB}</span></div><div class="mfee-row"><span class="mfee-label">Stadium / Stand</span><span class="mfee-val">${e.stadium}</span></div>`;
+    if(currentTicket.cat==='event') extraHTML=`<div class="mfee-row"><span class="mfee-label">Event</span><span class="mfee-val">${e.eventName}</span></div><div class="mfee-row"><span class="mfee-label">Venue</span><span class="mfee-val">${e.venue}</span></div>`;
+  }
+
+  document.getElementById('book-modal-title').textContent = `BOOK — ${currentTicket.title.toUpperCase()}`;
+  document.getElementById('book-ticket-info').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="font-size:28px;">${currentTicket.icon}</div>
+      <div><div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--text);">${currentTicket.title}</div>
+      <div style="font-size:11px;color:var(--muted);">${currentTicket.subtitle}</div></div>
+      <div style="margin-left:auto;">${catPillHTML(currentTicket.cat)}</div>
+    </div>
+    <div class="mfee-row"><span class="mfee-label">Date & Time</span><span class="mfee-val">${fmtDate(currentTicket.date)} · ${currentTicket.time}</span></div>
+    ${extraHTML}`;
+
+  document.getElementById('seat-picker-container').innerHTML = buildSeatPicker(currentTicket);
+  updateBookSummary();
+  document.getElementById('book-modal').classList.add('open');
+}
+
+function confirmBooking(){
+  if(!currentTicket||selectedSeats.length===0){showToast('Please select at least one seat','red');return;}
+  const sub = currentTicket.price * selectedSeats.length;
+  const fee = Math.round(sub*0.02);
+  const total = sub+fee;
+  if(total>5200){showToast('Insufficient VT balance','red');return;}
+
+  const bookingId = '#VTK-'+String(myBookings.length+5).padStart(4,'0');
+  const booking = {id:bookingId,ticket:currentTicket,seats:selectedSeats.slice(),total,fee,date:new Date().toLocaleDateString()};
+  myBookings.push(booking);
+  currentTicket.takenSeats.push(...selectedSeats);
+
+  closeModal('book-modal');
+  showBoardingPass(booking);
+  renderHome();
+}
+
+// ─────────────────────────────
+//  BOARDING PASS
+// ─────────────────────────────
+function showBoardingPass(booking){
+  const t = booking.ticket;
+  const m = CAT_META[t.cat];
+  const seatLabels = booking.seats.map(s=>{
+    const cols = t.cat==='cinema'||t.cat==='cricket'||t.cat==='event'?10:8;
+    return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor((s-1)/cols)]+(((s-1)%cols)+1);
+  }).join(', ');
+
+  const bars = Array.from({length:40},(_,i)=>
+    `<div class="bp-bar" style="width:${1+Math.floor(Math.random()*2)}px;height:${12+Math.floor(Math.random()*28)}px;"></div>`).join('');
+
+  let bodyFields = '';
+  if(t.extra){
+    const e=t.extra;
+    if(t.cat==='airline') bodyFields=`<div class="bp-field"><div class="bp-field-label">FROM</div><div class="bp-field-val">${e.from}</div></div><div class="bp-field"><div class="bp-field-label">TO</div><div class="bp-field-val">${e.to}</div></div><div class="bp-field"><div class="bp-field-label">FLIGHT</div><div class="bp-field-val">${e.flightNo}</div></div><div class="bp-field"><div class="bp-field-label">CLASS</div><div class="bp-field-val">${e.class}</div></div>`;
+    else if(t.cat==='cricket') bodyFields=`<div class="bp-field"><div class="bp-field-label">MATCH</div><div class="bp-field-val" style="font-size:11px;">${e.teamA} vs ${e.teamB}</div></div><div class="bp-field"><div class="bp-field-label">STADIUM</div><div class="bp-field-val" style="font-size:10px;">${e.stadium}</div></div><div class="bp-field"><div class="bp-field-label">FORMAT</div><div class="bp-field-val">${e.format}</div></div><div class="bp-field"><div class="bp-field-label">STAND</div><div class="bp-field-val">${e.stand}</div></div>`;
+    else if(t.cat==='cinema') bodyFields=`<div class="bp-field"><div class="bp-field-label">MOVIE</div><div class="bp-field-val" style="font-size:11px;">${e.movie}</div></div><div class="bp-field"><div class="bp-field-label">CINEMA</div><div class="bp-field-val" style="font-size:11px;">${e.cinema}</div></div><div class="bp-field"><div class="bp-field-label">SCREEN</div><div class="bp-field-val" style="font-size:11px;">${e.screen}</div></div><div class="bp-field"><div class="bp-field-label">LANG</div><div class="bp-field-val">${e.lang}</div></div>`;
+    else bodyFields=`<div class="bp-field"><div class="bp-field-label">EVENT</div><div class="bp-field-val" style="font-size:11px;">${t.title}</div></div><div class="bp-field"><div class="bp-field-label">DATE</div><div class="bp-field-val">${fmtDate(t.date)}</div></div><div class="bp-field"><div class="bp-field-label">TIME</div><div class="bp-field-val">${t.time}</div></div><div class="bp-field"><div class="bp-field-label">SEATS</div><div class="bp-field-val">${seatLabels}</div></div>`;
+  }
+
+  document.getElementById('boarding-pass-content').innerHTML = `
+    <div style="text-align:center;margin-bottom:18px;">
+      <div style="font-size:40px;">🎉</div>
+      <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--green);letter-spacing:2px;margin:6px 0 2px;">BOOKING CONFIRMED</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">${booking.id} · NFT Minted on BNB Chain</div>
+    </div>
+    <div class="boarding-pass">
+      <div class="bp-header">
+        <div class="bp-airline">${m.icon} ${m.label.toUpperCase()} · VURA TICKET</div>
+        <div style="font-family:'Orbitron',monospace;font-size:20px;font-weight:900;color:var(--text);margin-top:8px;">${t.title}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">${t.subtitle}</div>
+      </div>
+      <div class="bp-body">${bodyFields}</div>
+      <div style="padding:12px 24px;border-top:1px dashed rgba(255,255,255,0.06);border-bottom:1px dashed rgba(255,255,255,0.06);">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+          <div class="bp-field"><div class="bp-field-label">SEATS</div><div class="bp-field-val" style="font-size:12px;">${seatLabels}</div></div>
+          <div class="bp-field"><div class="bp-field-label">DATE</div><div class="bp-field-val" style="font-size:12px;">${fmtDate(t.date)}</div></div>
+          <div class="bp-field"><div class="bp-field-label">TOTAL</div><div class="bp-field-val" style="color:var(--gold);">${booking.total} VT</div></div>
+        </div>
+      </div>
+      <div class="bp-footer">
+        <div class="bp-barcode">${bars}</div>
+        <div class="bp-qr">🎟️</div>
+      </div>
+    </div>`;
+  document.getElementById('pass-modal').classList.add('open');
+}
+
+// ─────────────────────────────
+//  MY TICKETS
+// ─────────────────────────────
+function renderMyTickets(){
+  const el = document.getElementById('my-tickets-list');
+  if(!myBookings.length){
+    el.innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:13px;">No tickets yet. <span style="color:var(--green);cursor:pointer;" onclick="showPage('home')">Browse tickets →</span></div>`;
+    return;
+  }
+  el.innerHTML = myBookings.map(b=>`
+    <div class="booked-ticket">
+      <div class="bt-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:22px;">${b.ticket.icon}</span>
+          <div class="bt-title">${b.ticket.title}</div>
+          ${catPillHTML(b.ticket.cat)}
+        </div>
+        <span class="pill green">✓ Confirmed</span>
+      </div>
+      <div class="bt-body">
+        <div><div class="bt-field-label">BOOKING ID</div><div class="bt-field-val">${b.id}</div></div>
+        <div><div class="bt-field-label">DATE</div><div class="bt-field-val">${fmtDate(b.ticket.date)}</div></div>
+        <div><div class="bt-field-label">TIME</div><div class="bt-field-val">${b.ticket.time}</div></div>
+        <div><div class="bt-field-label">SEATS</div><div class="bt-field-val green">${b.seats.length} Seat(s)</div></div>
+        <div><div class="bt-field-label">TOTAL PAID</div><div class="bt-field-val gold">${b.total} VT</div></div>
+      </div>
+    </div>`).join('');
+}
+
+// ─────────────────────────────
+//  ADMIN
+// ─────────────────────────────
+function aTab(name, el){
+  document.querySelectorAll('.a-sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.a-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('asec-'+name).classList.add('active');
+  if(el) el.classList.add('active');
+}
+function renderAdminTables(){
+  document.getElementById('adm-total-tickets').textContent = tickets.length;
+  const tbody = document.getElementById('adm-tickets-table');
+  if(tbody){
+    tbody.innerHTML = tickets.map(t=>`
+      <tr>
+        <td><b>${t.icon} ${t.title}</b></td>
+        <td>${catPillHTML(t.cat)}</td>
+        <td>${fmtDate(t.date)} ${t.time}</td>
+        <td class="mono gold">${t.price}</td>
+        <td class="mono">${seatsLeft(t)} / ${t.seats.toLocaleString()}</td>
+        <td><span class="pill green">Active</span></td>
+        <td>
+          <button class="act-btn ab-gold" onclick="editTicket(${t.id})">Edit</button>
+          <button class="act-btn ab-red" onclick="deleteTicket(${t.id})">Delete</button>
+        </td>
+      </tr>`).join('');
+  }
+}
+function deleteTicket(id){
+  tickets = tickets.filter(t=>t.id!==id);
+  renderAdminTables();
+  renderHome();
+  showToast('Ticket removed','red');
+}
+function editTicket(id){
+  const t = tickets.find(x=>x.id===id);
+  if(!t) return;
+  document.getElementById('ct-title').value=t.title;
+  document.getElementById('ct-cat').value=t.cat;
+  document.getElementById('ct-date').value=t.date;
+  document.getElementById('ct-time').value=t.time;
+  document.getElementById('ct-price').value=t.price;
+  document.getElementById('ct-seats').value=t.seats;
+  tickets=tickets.filter(x=>x.id!==id);
+  toggleCatFields();
+  aTab('create',document.querySelectorAll('.a-tab')[2]);
+  updateTicketPreview();
+}
+
+// ─────────────────────────────
+//  CREATE TICKET FORM
+// ─────────────────────────────
+function toggleCatFields(){
+  const cat = document.getElementById('ct-cat').value;
+  document.querySelectorAll('.cat-fields').forEach(f=>f.style.display='none');
+  const el = document.getElementById('cf-'+cat);
+  if(el) el.style.display='block';
+}
+
+function selectGrad(el){
+  document.querySelectorAll('.cp-swatch').forEach(s=>s.classList.remove('sel'));
+  el.classList.add('sel');
+  selectedGradient = el.dataset.grad;
+  updateTicketPreview();
+}
+
+function updateTicketPreview(){
+  const title = document.getElementById('ct-title').value||'Ticket Title';
+  const cat   = document.getElementById('ct-cat').value||'event';
+  const date  = document.getElementById('ct-date').value||'2026-06-15';
+  const time  = document.getElementById('ct-time').value||'18:00';
+  const price = document.getElementById('ct-price').value||'0';
+  const m = CAT_META[cat];
+  document.getElementById('ticket-preview-container').innerHTML = `
+    <div class="ticket-card" style="max-width:320px;cursor:default;">
+      <div class="tc-banner">
+        <div class="tc-banner-bg" style="background:${selectedGradient}"></div>
+        <div class="tc-banner-emoji">${m.icon}</div>
+        <div class="tc-banner-overlay"></div>
+        <div class="tc-badge" style="${btnStyle(cat)}">${catPillHTML(cat)}</div>
+      </div>
+      <div class="tc-body">
+        <div class="tc-title">${title}</div>
+        <div class="tc-meta">
+          <div class="tc-meta-item">📅 ${fmtDate(date)}</div>
+          <div class="tc-meta-item">🕐 ${time}</div>
+        </div>
+        <div class="tc-footer" style="margin-top:10px;">
+          <div><div class="tc-price">${parseInt(price).toLocaleString()||'0'} VT</div></div>
+          <div style="padding:9px 16px;border-radius:10px;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;${btnStyle(cat)}">BOOK NOW</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function createTicket(){
+  const title = document.getElementById('ct-title').value.trim();
+  const cat   = document.getElementById('ct-cat').value;
+  const date  = document.getElementById('ct-date').value;
+  const time  = document.getElementById('ct-time').value;
+  const price = parseInt(document.getElementById('ct-price').value)||0;
+  const totalSeats = parseInt(document.getElementById('ct-seats').value)||50;
+  const featured = document.getElementById('ct-featured').value==='yes';
+  const desc = document.getElementById('ct-desc').value||'';
+  const m = CAT_META[cat];
+
+  if(!title){showToast('Title is required','red');return;}
+  if(!date){showToast('Date is required','red');return;}
+  if(price<1){showToast('Price must be > 0','red');return;}
+
+  let extra={};
+  if(cat==='airline') extra={from:document.getElementById('ct-from').value||'—',to:document.getElementById('ct-to').value||'—',airline:document.getElementById('ct-airline').value||'—',flightNo:document.getElementById('ct-flightno').value||'—',class:document.getElementById('ct-class').value,duration:document.getElementById('ct-duration').value||'—'};
+  if(cat==='train') extra={from:document.getElementById('ct-train-from').value||'—',to:document.getElementById('ct-train-to').value||'—',train:document.getElementById('ct-train-name').value||'—',trainNo:document.getElementById('ct-train-no').value||'—',class:document.getElementById('ct-train-class').value,duration:document.getElementById('ct-train-dur').value||'—'};
+  if(cat==='bus') extra={from:document.getElementById('ct-bus-from').value||'—',to:document.getElementById('ct-bus-to').value||'—',operator:document.getElementById('ct-bus-op').value||'—',busType:document.getElementById('ct-bus-type').value,busNo:document.getElementById('ct-bus-no').value||'—',duration:document.getElementById('ct-bus-dur').value||'—'};
+  if(cat==='cinema') extra={movie:document.getElementById('ct-movie').value||title,cinema:document.getElementById('ct-cinema').value||'—',lang:document.getElementById('ct-lang').value,screen:document.getElementById('ct-screen').value||'—',genre:document.getElementById('ct-genre').value||'—',pgRating:document.getElementById('ct-rating').value};
+  if(cat==='cricket') extra={teamA:document.getElementById('ct-teamA').value||'—',teamB:document.getElementById('ct-teamB').value||'—',stadium:document.getElementById('ct-stadium').value||'—',tourney:document.getElementById('ct-tourney').value||'—',format:document.getElementById('ct-format').value,stand:document.getElementById('ct-stand').value||'General'};
+  if(cat==='event') extra={eventName:document.getElementById('ct-event-name').value||title,venue:document.getElementById('ct-venue').value||'—',organizer:document.getElementById('ct-organizer').value||'—',etype:document.getElementById('ct-etype').value,city:document.getElementById('ct-ecity').value||'—',tier:document.getElementById('ct-etier').value};
+
+  let subtitle = '';
+  if(cat==='airline') subtitle=`${extra.airline} · ${extra.flightNo} · ${extra.class}`;
+  if(cat==='train') subtitle=`${extra.train} · ${extra.trainNo} · ${extra.class}`;
+  if(cat==='bus') subtitle=`${extra.operator} · ${extra.busType}`;
+  if(cat==='cinema') subtitle=`${extra.cinema} · ${extra.screen} · ${extra.lang}`;
+  if(cat==='cricket') subtitle=`${extra.teamA} vs ${extra.teamB}`;
+  if(cat==='event') subtitle=`${extra.venue} · ${extra.tier}`;
+
+  tickets.push({id:Date.now(),cat,title,subtitle,date,time,price,seats:totalSeats,takenSeats:[],banner:selectedGradient,icon:m.icon,desc,featured,extra});
+  renderHome();
+  renderAdminTables();
+
+  // reset
+  ['ct-title','ct-date','ct-time','ct-price','ct-seats','ct-from','ct-to','ct-airline','ct-flightno','ct-duration',
+   'ct-train-from','ct-train-to','ct-train-name','ct-train-no','ct-train-dur','ct-bus-from','ct-bus-to','ct-bus-op','ct-bus-no','ct-bus-dur',
+   'ct-movie','ct-cinema','ct-screen','ct-genre','ct-teamA','ct-teamB','ct-stadium','ct-tourney','ct-stand',
+   'ct-event-name','ct-venue','ct-organizer','ct-ecity','ct-desc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('ticket-preview-container').innerHTML='';
+
+  showToast('✓ Ticket published: '+title,'gold');
+  setTimeout(()=>aTab('manage',document.querySelectorAll('.a-tab')[1]),1200);
+}
+
+// ─────────────────────────────
+//  UTILITIES
+// ─────────────────────────────
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');}));
+
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast '+(type||'');
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ─────────────────────────────
+//  INIT
+// ─────────────────────────────
+toggleCatFields();
+renderHome();
+updateTicketPreview();
+</script>
+</body>
+</html>
